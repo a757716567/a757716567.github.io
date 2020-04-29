@@ -56,13 +56,37 @@
   
 
       
-        <time datetime="2020-04-29T05:48:02.000Z">2020-04-29</time>
+        <time datetime="2020-04-29T05:48:00.000Z">2020-04-29</time>
       
     </header>
     <div class="entry">
       
-        <h1 id="关于hexo首页文章只显示部分内容"><a href="#关于hexo首页文章只显示部分内容" class="headerlink" title="关于hexo首页文章只显示部分内容"></a>关于hexo首页文章只显示部分内容</h1><a id="more"></a>
-<pre><code>在要显示的内容后添加&apos;&lt;!--more--&gt;&apos;即可</code></pre>
+        <h1 id="hexo"><a href="#hexo" class="headerlink" title="hexo"></a>hexo</h1><a id="more"></a>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><ul>
+<li><code>hexo init</code> 命令用于初始化本地文件夹为网站的根目录</li>
+<li><code>hexo new [layout] &lt;title&gt;</code>命令用于新建文章，一般可以简写为<code>hexo n</code><pre><code>layout 可选参数，用以指定文章类型，若无指定则默认由配置文件中的 default_layout 选项决定
+title 必填参数，用以指定文章标题，如果参数值中含有空格，则需要使用双引号包围  </code></pre></li>
+<li><code>hexo s -d</code> 本地启动hexo<br> 访问<a href="http://localhost:4000/admin" target="_blank" rel="noopener">http://localhost:4000/admin</a> 进行文章可视化编辑(需安装hexo-admin)</li>
+<li><code>hexo clean</code>或<code>hexo c</code> 清理缓存</li>
+<li><code>hexo deploy</code>或<code>hexo d</code> 命令用于部署网站</li>
+<li><code>hexo clean &amp;&amp; hexo deploy</code>清理缓存重新部署<h2 id="hexo文章显示部分内容"><a href="#hexo文章显示部分内容" class="headerlink" title="hexo文章显示部分内容"></a>hexo文章显示部分内容</h2></li>
+<li>在要隐藏的内容前添加一行’<!--more-->‘即可，注:不可加在文章最前</li>
+</ul>
+<hr>
+<h2 id="Markdown基本语法"><a href="#Markdown基本语法" class="headerlink" title="Markdown基本语法"></a>Markdown基本语法</h2><pre><code>&quot;#文字&quot;为标题文字 &quot;#&quot;号数量为对应标题层级
+&quot;*文字*&quot;为加粗
+三个以上的&quot;-&quot;或&quot;*&quot;为分割线
+&quot;![图片alt](图片地址 &apos;&apos;图片title&apos;&apos;)&quot;
+图片alt就是显示在图片下面的文字，相当于对图片内容的解释
+图片title是图片的标题，当鼠标移到图片上时显示的内容。title可加可不加
+[超链接名](超链接地址 &quot;超链接title&quot;),title可加可不加
+&quot;-,+,*&quot;都可以用于无序列表，符号与文字中间需要空格
+&quot;`代码`&quot;为单行代码块
+多行代码块：
+&quot;  ```
+  代码
+  代码
+  ```  &quot;</code></pre>
       
     </div>
       
