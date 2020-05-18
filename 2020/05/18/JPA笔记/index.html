@@ -1,0 +1,184 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>JPA笔记 › 垃圾回收站</title>
+  <meta name="author" content="Mr Fan">
+  
+  <meta name="description" content="记录生活点滴">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="JPA笔记"/>
+  <meta property="og:site_name" content="垃圾回收站"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="垃圾回收站" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header"><div class="meta inner">
+  <h1><a href="/">垃圾回收站</a></h1>
+  <h2><a href="/">一天进步一点</a></h2>
+  <nav id="main-nav">
+    <ul>
+      
+      <li><a href="/about">About</a></li>
+      
+      <li><a href="/archives">Archives</a></li>
+      
+      <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+</div>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  <div class="post-content">
+    <header>
+      
+  
+    <h1 class="title">JPA笔记</h1>
+  
+
+      
+        <time datetime="2020-05-18T02:49:23.000Z">2020-05-18</time>
+      
+    </header>
+    <div class="entry">
+      
+        <h3 id="jpa核心配置文件persistence-xml"><a href="#jpa核心配置文件persistence-xml" class="headerlink" title="jpa核心配置文件persistence.xml"></a>jpa核心配置文件persistence.xml</h3><a id="more"></a>
+<pre><code>默认加载的persistence.xml在classpath的META-INF的文件夹下,classpath指定路径为resoures，所以需要在resources文件夹下创建META-INF/persistence.xml文件;
+hibernate.hbm2ddl.auto的配置参数:
+create:每次加载hibernate，重新创建数据库表结构，这就是导致数据库表数据丢失的原因。
+update:加载hibernate自动更新数据库结构
+validate:加载hibernate时，验证创建数据库表结构与你配置的hibernate是否一致，如果不一致就抛出异常，并不做更新
+create-drop:加载hibernate时创建，退出时删除表结构</code></pre><h3 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h3><p> @Entity<br><br> 作用：指定当前类是实体类。<br> <br>@Table<br><br> 作用：指定实体类和表之间的对应关系。属性：name：指定数据库表的名称<br> <br>@Id<br><br> 作用：指定当前字段是主键。<br><br>@GeneratedValue<br><br>作用：指定主键的生成方式。。属性：strategy ：指定主键生成策略。<br><br>四种标准用法:</p>
+<ul>
+<li>IDENTITY:主键由数据库自动生成（主要是自动增长型）</li>
+<li>SEQUENCE：根据底层数据库的序列来生成主键，条件是数据库支持序列。</li>
+<li>AUTO：主键由程序控制</li>
+<li>TABLE：使用一个特定的数据库表格来保存主键</li>
+</ul>
+<p><br>@Column<br><br>作用：指定实体类属性和数据库表之间的对应关系<br><br>属性：<br><br>name：指定数据库表的列名称。<br><br>unique：是否唯一<br>nullable：是否可以为空<br>inserttable：是否可以插入<br>updateable：是否可以更新<br>columnDefinition: 定义建表时创建此列的DDL<br>secondaryTable: 从表名。如果此列不建在主表上（默认建在主表），该属性定义该列所在从表的名字搭建开发环境<br><br>@OneToMany</br><br>作用：建立一对多的关系映射<br><br> 属性：<br><br> targetEntityClass：指定多的多方的类的字节码<br><br> mappedBy：指定从表实体类中引用主表对象的名称。<br><br> cascade：指定要使用的级联操作<br><br> fetch：指定是否采用延迟加载<br><br> orphanRemoval：是否使用孤儿删除<br><br> @JoinColumn<br><br>     作用：用于定义主键字段和外键字段的对应关系。<br><br>     属性：<br><br>        name：指定外键字段的名称<br><br>        referencedColumnName：指定引用主表的主键字段名称<br><br>        unique：是否唯一。默认值不唯一<br><br>        nullable：是否允许为空。默认值允许。<br><br>        insertable：是否允许插入。默认值允许。<br><br>        updatable：是否允许更新。默认值允许。<br><br>        columnDefinition：列的定义信息。<br></p>
+<p>主表与从表建立关联关系后删除数据操作:</p>
+<ul>
+<li><p>删除从表数据：可以随时任意删除。</p>
+</li>
+<li><p>删除主表数据：</p>
+</li>
+<li><p>有从表数据<br><br>1、在默认情况下，它会把外键字段置为null，然后删除主表数据。如果在数据库的表                结构上，外键字段有非空约束，默认情况就会报错了。<br><br>2、如果配置了放弃维护关联关系的权利，则不能删除（与外键字段是否允许为null，        没有关系）因为在删除时，它根本不会去更新从表的外键字段了。<br><br>3、如果还想删除，使用级联删除引用</p>
+</li>
+<li><p>没有从表数据引用：随便删</p>
+</li>
+</ul>
+<p>@ManyToMany<BR><br>    作用：用于映射多对多关系<BR><br>    属性：<br>        <BR>cascade：配置级联操作。<br>        <BR>fetch：配置是否采用延迟加载。<br>        <BR>targetEntity：配置目标的实体类。映射多对多的时候不用写。</p>
+<p>@JoinTable<BR><br>    作用：针对中间表的配置<BR><br>    属性：<br>        <BR>name：配置中间表的名称<br>        <BR>joinColumns：中间表的外键字段关联当前实体类所对应表的主键字段<br>        inverseJoinColumn：中间表的外键字段关联对方表的主键字段</p>
+
+      
+    </div>
+      
+      <footer>
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/jpa/">jpa</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+      </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  
+</section>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:a757716567.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">最新文章</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2020/05/18/JPA笔记/">JPA笔记</a>
+      </li>
+    
+      <li>
+        <a href="/2020/04/29/我的第一篇博客/">我的第一篇博客</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/jpa/" style="font-size: 10px;">jpa</a>
+  </div>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Mr Fan
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+
+</body>
+</html>
+
